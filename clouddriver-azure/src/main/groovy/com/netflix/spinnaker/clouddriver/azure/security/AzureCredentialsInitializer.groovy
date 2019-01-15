@@ -36,6 +36,8 @@ class AzureCredentialsInitializer {
     def azureAccounts = []
     azureConfigurationProperties.accounts.each { AzureConfigurationProperties.ManagedAccount managedAccount ->
       try {
+        List<String> defaultRegions = ['westus', 'eastus'];
+        managedAccount.regions.addAll(defaultRegions);
         def azureAccount = new AzureNamedAccountCredentials(
           managedAccount.name,
           managedAccount.environment ?: managedAccount.name,
