@@ -121,7 +121,10 @@ class AzureResourceManagerClient extends AzureBaseClient {
    * @return True if it already exists
    */
   boolean resourceGroupExists(String resourceGroupName) {
+    long start = System.nanoTime();
     azure.resourceGroups().contain(resourceGroupName)
+    long end = System.nanoTime();
+    log.info "zhiqing resourceGroupExists cost ${(end - start) / 1000000} ms"
   }
 
   private ResourceGroup getResourceGroup(String resourceGroupName) {
