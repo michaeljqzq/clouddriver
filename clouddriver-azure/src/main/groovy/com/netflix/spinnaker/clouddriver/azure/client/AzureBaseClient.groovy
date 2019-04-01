@@ -28,6 +28,10 @@ import com.microsoft.rest.ServiceResponse
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.Proxy
+
 @Slf4j
 @CompileStatic
 public abstract class AzureBaseClient {
@@ -49,12 +53,40 @@ public abstract class AzureBaseClient {
     this.azure = initialize(credentials, subscriptionId, userAgentAppName)
   }
 
+  @Slf4j
+  static class ZhiqingDynamicInvocationHandler implements InvocationHandler {
+    private final Map<String, Method> methodMap = new HashMap<>()
+    private Azure az
+    private static int count
+    private String prefix
+
+    public ZhiqingDynamicInvocationHandler(Azure azure, String prefix) {
+      this.az = azure
+      this.prefix = prefix
+      for(Method method: azure.getClass().getDeclaredMethods()) {
+        methodMap.put(method.getName(), method)
+      }
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) {
+      log.info "zhiqing Azure(${prefix}).${method.getName()} called, counter is ${count++}"
+      Object result = methodMap.get(method.getName()).invoke(az, args)
+
+      return result
+    }
+  }
+
   private Azure initialize(ApplicationTokenCredentials credentials, String subscriptionId, String userAgentAppName) {
-    Azure.configure()
+    log.info "zhiqing Azure azure initialized with principal ID ${credentials.clientId()}"
+    Azure az = Azure.configure()
       .withLogLevel(LogLevel.NONE)
       .withUserAgent(userAgentAppName)
       .authenticate(credentials)
       .withSubscription(subscriptionId)
+    Class[] classes = [Azure.class]
+    Azure azure = (Azure) Proxy.newProxyInstance(this.getClass().getClassLoader(), classes, new ZhiqingDynamicInvocationHandler(az, credentials.clientId().substring(0,4)))
+    return azure
   }
 
   /**
