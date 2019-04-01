@@ -121,6 +121,7 @@ class AzureSecurityGroupCachingAgent implements CachingAgent, OnDemandAgent, Acc
     }
 
     try {
+      log.info "[zhiqing SecurityGroupCachingAgent->handle] get SecurityGroup: ${securityGroupName}"
       updatedSecurityGroup = metricsSupport.readData {
         creds.networkClient.getNetworkSecurityGroup(resourceGroupName, securityGroupName)
       }
@@ -160,7 +161,7 @@ class AzureSecurityGroupCachingAgent implements CachingAgent, OnDemandAgent, Acc
   CacheResult loadData(ProviderCache providerCache) {
     log.info("Describing items in ${agentType}")
     def currentTime = System.currentTimeMillis()
-
+    log.info "[zhiqing SecurityGroupCachingAgent->loadData] get all SecurityGroups in region: ${region}"
     buildCacheResult(providerCache, creds.networkClient.getNetworkSecurityGroupsAll(region), currentTime, null, null)
   }
 

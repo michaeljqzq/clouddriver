@@ -104,6 +104,7 @@ class AzureAppGatewayCachingAgent extends AzureCachingAgent {
     }
 
     try {
+      log.info "[zhiqing AppGatewayCachingAgent->handle] get appgateway: ${appGatewayName}"
       updatedAppGateway = metricsSupport.readData {
         creds.networkClient.getAppGateway(resourceGroupName, appGatewayName)
       }
@@ -146,6 +147,7 @@ class AzureAppGatewayCachingAgent extends AzureCachingAgent {
   CacheResult loadData(ProviderCache providerCache) {
     log.info("Describing items in ${agentType}")
     def currentTime = System.currentTimeMillis()
+    log.info "[zhiqing AppGatewayCachingAgent->loadData] get all appgateways in region: ${region}"
     buildCacheResult(providerCache, creds.networkClient.getAppGatewaysAll(region), currentTime, null, null)
   }
 

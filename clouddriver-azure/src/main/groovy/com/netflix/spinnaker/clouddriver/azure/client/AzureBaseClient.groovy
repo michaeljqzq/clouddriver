@@ -83,9 +83,9 @@ public abstract class AzureBaseClient {
       .withUserAgent(userAgentAppName)
       .authenticate(credentials)
       .withSubscription(subscriptionId)
-    Class[] classes = [Azure.class]
-    Azure azure = (Azure) Proxy.newProxyInstance(this.getClass().getClassLoader(), classes, new ZhiqingDynamicInvocationHandler(az, credentials.clientId().substring(0,4)))
-    return azure
+//    Class[] classes = [Azure.class]
+//    Azure azure = (Azure) Proxy.newProxyInstance(this.getClass().getClassLoader(), classes, new ZhiqingDynamicInvocationHandler(az, credentials.clientId().substring(0,4)))
+    return az
   }
 
   /**
