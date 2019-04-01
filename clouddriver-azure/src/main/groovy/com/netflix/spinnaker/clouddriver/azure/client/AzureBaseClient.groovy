@@ -53,7 +53,6 @@ public abstract class AzureBaseClient {
     this.azure = initialize(credentials, subscriptionId, userAgentAppName)
   }
 
-  @Slf4j
   static class ZhiqingDynamicInvocationHandler implements InvocationHandler {
     private final Map<String, Method> methodMap = new HashMap<>()
     private Azure az
