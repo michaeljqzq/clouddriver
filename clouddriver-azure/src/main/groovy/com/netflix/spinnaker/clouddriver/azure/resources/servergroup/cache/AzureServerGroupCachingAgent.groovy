@@ -232,7 +232,7 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
   CacheResult buildCacheResult(ProviderCache providerCache, Collection<AzureServerGroupDescription> serverGroups,
                                Map<String, CacheData> onDemandCacheResults, List<String> evictions) {
 
-      Map<String, MutableCacheData> cachedApplications = MutableCacheData.mutableCacheMap()
+//      Map<String, MutableCacheData> cachedApplications = MutableCacheData.mutableCacheMap()
       Map<String, MutableCacheData> cachedClusters = MutableCacheData.mutableCacheMap()
       Map<String, MutableCacheData> cachedServerGroups = MutableCacheData.mutableCacheMap()
       Map<String, MutableCacheData> cachedInstances = MutableCacheData.mutableCacheMap()
@@ -250,7 +250,7 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
           Map<String, List<CacheData>> results = objectMapper.readValue(onDemandCacheData.attributes.cacheResults as String,
             new TypeReference<Map<String, List<MutableCacheData>>>() {})
 
-          cache(results[AZURE_APPLICATIONS.ns], cachedApplications)
+//          cache(results[AZURE_APPLICATIONS.ns], cachedApplications)
           cache(results[AZURE_CLUSTERS.ns], cachedClusters)
           cache(results[AZURE_SERVER_GROUPS.ns], cachedServerGroups)
           cache(results[AZURE_INSTANCES.ns], cachedInstances)
@@ -258,7 +258,7 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
         else {
 
           def clusterKey = Keys.getClusterKey(azureCloudProvider, serverGroup.appName, serverGroup.clusterName, accountName)
-          def appKey = Keys.getApplicationKey(azureCloudProvider, serverGroup.appName)
+//          def appKey = Keys.getApplicationKey(azureCloudProvider, serverGroup.appName)
           def loadBalancerKey = Keys.getLoadBalancerKey(azureCloudProvider, serverGroup.appGatewayName, serverGroup.appGatewayName,
             serverGroup.application, serverGroup.clusterName, region, accountName)
 
@@ -272,14 +272,14 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
           cachedClusters[clusterKey].with {
             attributes.name = serverGroup.clusterName
             attributes.accountName = accountName
-            relationships[AZURE_APPLICATIONS.ns].add(appKey)
+//            relationships[AZURE_APPLICATIONS.ns].add(appKey)
             relationships[AZURE_SERVER_GROUPS.ns].add(serverGroupKey)
             relationships[AZURE_APP_GATEWAYS.ns].add(loadBalancerKey)
           }
 
           cachedServerGroups[serverGroupKey].with {
             attributes.serverGroup = serverGroup
-            relationships[AZURE_APPLICATIONS.ns].add(appKey)
+//            relationships[AZURE_APPLICATIONS.ns].add(appKey)
             relationships[AZURE_CLUSTERS.ns].add(clusterKey)
             relationships[AZURE_APP_GATEWAYS.ns].add(loadBalancerKey)
           }
