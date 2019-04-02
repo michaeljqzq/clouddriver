@@ -59,11 +59,11 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
   CacheResult loadData(ProviderCache providerCache) {
     def start = System.currentTimeMillis()
 
-    log.info "[zhiqing ServerGroupCachingAgent->loadData] get all server groups in region: ${region}"
+    log.info "[zhiqing ${accountName} ServerGroupCachingAgent->loadData] get all server groups in region: ${region}"
     List<AzureServerGroupDescription> serverGroups = creds.computeClient.getServerGroupsAll(region)
     serverGroups?.each {
       try {
-        log.info "[zhiqing ServerGroupCachingAgent->loadData] get server group disabled: ${it.name}"
+        log.info "[zhiqing ${accountName} ServerGroupCachingAgent->loadData] get server group disabled: ${it.name}"
         it.isDisabled = creds.networkClient.isServerGroupDisabled(AzureUtilities.getResourceGroupName(it.appName, region), it.appGatewayName, it.name)
       } catch (Exception e) {
         log.warn("Exception ${e.message} while computing 'isDisable' state for server group ${it.name}")
@@ -175,7 +175,7 @@ class AzureServerGroupCachingAgent extends AzureCachingAgent {
     }
 
     try {
-      log.info "[zhiqing ServerGroupCachingAgent->handle] get server group: ${serverGroupName}"
+      log.info "[zhiqing ${accountName} ServerGroupCachingAgent->handle] get server group: ${serverGroupName}"
       serverGroup = metricsSupport.readData {
         def sg = creds.computeClient.getServerGroup(resourceGroupName, serverGroupName)
         return sg ?: null

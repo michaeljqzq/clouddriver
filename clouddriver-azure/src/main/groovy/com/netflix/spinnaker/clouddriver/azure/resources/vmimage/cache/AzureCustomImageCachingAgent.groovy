@@ -96,7 +96,7 @@ class AzureCustomImageCachingAgent implements CachingAgent, AccountAware {
     // return a list of virtual machine images as read from the config.yml file
 
     def customImages = AzureStorageClient.getCustomImages(vmCustomImages)
-    log.info "[zhiqing CustomImageCachingAgent] get CustomImages, result length is ${customImages != null && customImages.size()}"
+    log.info "[zhiqing ${accountName} CustomImageCachingAgent] get CustomImages, result length is ${customImages != null && customImages.size()}"
 
     data.addAll( customImages.collect { AzureCustomVMImage vmImage ->
       Map<String, Object> attributes = [vmimage: vmImage]

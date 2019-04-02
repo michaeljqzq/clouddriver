@@ -83,7 +83,7 @@ class AzureNetworkCachingAgent implements CachingAgent, AccountAware {
   CacheResult loadData(ProviderCache providerCache) {
     log.info("Describing items in ${agentType}")
 
-    log.info "[zhiqing NetworkCachingAgent->loadData] get VN all in region: ${region}"
+    log.info "[zhiqing ${accountName} NetworkCachingAgent->loadData] get VN all in region: ${region}"
     def networks = creds
       .networkClient
       .getVirtualNetworksAll(region)
