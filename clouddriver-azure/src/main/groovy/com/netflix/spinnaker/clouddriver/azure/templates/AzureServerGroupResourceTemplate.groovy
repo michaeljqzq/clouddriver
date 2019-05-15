@@ -382,7 +382,6 @@ class AzureServerGroupResourceTemplate {
 
       if(description.enableInboundNAT){
         tags.enableInboundNAT = description.enableInboundNAT ? "true" : "false"
-        tags.loadBalancerName = LB_NAME
         this.dependsOn.add("[concat('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]")
       }
 
