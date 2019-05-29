@@ -18,6 +18,9 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation 'com.microsoft.azure:adal4j:1.6.3'
   implementation 'com.microsoft.azure:azure:1.19.0'
+  implementation 'org.aspectj:aspectjweaver:1.9.4'
+  implementation 'org.aspectj:aspectjrt:1.9.4'
+  implementation 'org.aspectj:aspectjtools:1.9.4'
 
   testImplementation "cglib:cglib-nodep"
   testImplementation "org.objenesis:objenesis"
