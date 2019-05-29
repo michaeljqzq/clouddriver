@@ -16,19 +16,21 @@
 
 package com.netflix.spinnaker.clouddriver.azure.config;
 
+import okhttp3.Interceptor;
 import okhttp3.Response;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import okhttp3.Interceptor;
 
 @Aspect
 public class AzureLogAspect {
   private Logger logger = LoggerFactory.getLogger(this.getClass());
-  //    @Pointcut("execution(* com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor.intercept(..))")
-  @Pointcut("execution(* com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor.intercept(..))")
-//    @Pointcut("within(com.microsoft.azure.management.resources.fluentcore.utils)")
+  //    @Pointcut("execution(*
+  // com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor.intercept(..))")
+  @Pointcut(
+      "execution(* com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor.intercept(..))")
+  //    @Pointcut("within(com.microsoft.azure.management.resources.fluentcore.utils)")
   public void intercept() {}
 
   @Around("intercept()")
@@ -38,13 +40,13 @@ public class AzureLogAspect {
     String url = chain.request().url().toString();
     try {
       return pjp.proceed();
-    }finally {
+    } finally {
       long end = System.nanoTime();
       logger.info("[{}ms] azureapi {}", (end - start) / 1000000, url);
     }
   }
 
-  @AfterReturning(value="intercept()", returning = "retVal")
+  @AfterReturning(value = "intercept()", returning = "retVal")
   public void logResponseCode(Response retVal) {
     logger.info("[{}] {}", retVal.code(), retVal.request().url().toString());
   }
